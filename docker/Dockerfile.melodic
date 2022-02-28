@@ -1,7 +1,7 @@
 FROM ros:melodic
 
 # To build:
-# docker build -t nvidia-dope:melodic-v1 -f Dockerfile.melodic ..
+# docker build -t nao:melodic -f Dockerfile.melodic ..
 
 ENV HOME /root
 ENV DEBIAN_FRONTEND=noninteractive

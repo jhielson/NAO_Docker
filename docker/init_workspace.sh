@@ -1,9 +1,6 @@
 #!/bin/bash
 #
 
-# Copyright (c) 2018, NVIDIA CORPORATION. All rights reserved.
-# Full license terms provided in LICENSE.md file.
-
 # Stop in case of any error.
 set -e
 
