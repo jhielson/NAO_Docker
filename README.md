@@ -28,4 +28,40 @@
       Only the first invocation of this script with a given name will create a container. Subsequent executions will attach to the running container allowing you -- in effect -- to have multiple terminal sessions into a single container.
 
 5. **Build NAO**
+5.1 Connect the robot to your computer using an ethernet cable. 
+5.2 Access the network setting and change the IPV4 method to 'Link-Local Only'.
 
+Now, you can turn the robot on. 
+
+5.3 Press the button located on the robot's chest and wait. He will say:
+"Hello! I am NAO. My IP adress is ..."
+You can use the IP address in your browser to access the robot's configuration. 
+
+---
+
+6. Ros
+6.1 Open a new terminal in the same container (if it's the first time you built the image, then you don't have to open a new terminal here)
+```
+$docker exec -it <image_name> bash
+```
+
+6.2 Run the following command and make note of your IP address:
+```
+$ifconfig
+```
+6.3 Open a new terminal in the same container (step 6.1). Run roscore:
+```
+$roscore 
+```
+6.4 Open a new terminal in the same container (step 6.1). Run roslaunch:
+```
+$roslaunch naoqi_driver naoqi_driver.launch nao_ip:=X roscore_ip:=X network_interface:=<eth0|wlan0|tethering...>
+```
+(if launch crashes due to audio, change the flag by running "roscd naoqi_driver", then edit file /share/boot_config.json)
+
+6.5 To check rostopics, open a new terminal in the same container and then:
+```
+$rostopic list
+$rostopic echo <name_of_topic>
+$rostopic pub <name_of_topic> <type_of_package> <message>
+```
