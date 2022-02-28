@@ -1,0 +1,65 @@
+FROM ros:melodic
+
+# To build:
+# docker build -t nvidia-dope:melodic-v1 -f Dockerfile.melodic ..
+
+ENV HOME /root
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install system and development components
+RUN apt-get clean
+RUN apt-get update && apt-get -y --no-install-recommends install \
+    apt-utils \
+    software-properties-common \
+    build-essential \
+    cmake \
+    git \
+    python3-pip \
+    libxext6 \
+    libx11-6 \
+    libglvnd0 \
+    libgl1 \
+    libglx0 \
+    libegl1 \
+    net-tools \
+    freeglut3-dev \
+    && apt-get -y autoremove \
+    && apt-get clean
+
+# Install required ROS components
+RUN apt-get update && apt-get -y --no-install-recommends install \
+  ros-melodic-cv-bridge \
+  ros-melodic-geometry-msgs \
+  ros-melodic-message-filters \
+  ros-melodic-resource-retriever \
+  ros-melodic-rospy \
+  ros-melodic-sensor-msgs \
+  ros-melodic-std-msgs \
+  ros-melodic-tf \
+  ros-melodic-vision-msgs \
+  ros-melodic-visualization-msgs \
+  ros-melodic-rviz \
+  #ros-melodic-nao* \
+  ros-melodic-naoqi-driver \
+  ros-melodic-audio-common \
+  ros-melodic-audio-common-msgs \
+  && apt-get -y autoremove \
+  && apt-get clean
+
+# pip install required Python packages
+COPY requirements.txt ${HOME}
+RUN python3 -m pip install --no-cache-dir -r ${HOME}/requirements.txt
+
+# Setup catkin workspace
+ENV CATKIN_WS ${HOME}/catkin_ws
+COPY . ${CATKIN_WS}/src/nao
+COPY docker/init_workspace.sh ${HOME}
+RUN ${CATKIN_WS}/src/nao/docker/init_workspace.sh
+RUN echo "source ${CATKIN_WS}/devel/setup.bash" >> ${HOME}/.bashrc
+
+ENV DISPLAY :0
+#ENV NVIDIA_VISIBLE_DEVICES all
+#ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
+ENV TERM=xterm
+# Some QT-Apps don't show controls without this
+ENV QT_X11_NO_MITSHM 1
