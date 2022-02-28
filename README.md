@@ -1,3 +1,5 @@
+(This README file and docker procedure has been largely inspired by the DOPE repository: https://github.com/NVlabs/Deep_Object_Pose/tree/master/docker)
+
 ## NAO in a Docker Container
 
 ### Steps
