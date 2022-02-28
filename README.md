@@ -67,3 +67,7 @@ $rostopic list
 $rostopic echo <name_of_topic>
 $rostopic pub <name_of_topic> <type_of_package> <message>
 ```
+
+NOTE: if bumbers and tactile sensors fail, a possible solution is:
+- clone the following repository inside you catkin_ws/src folder: https://github.com/ros-naoqi/nao_robot/tree/master/nao_bringup
+- go to catkin_ws folder, type "catkin_make", then "source devel/setup.bash"
